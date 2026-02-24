@@ -54,6 +54,7 @@ model User {
   orders        Order[]
   ticketSales   CampaignTicket[] @relation("SellerSales")
 }
+campaignSellers CampaignSeller[] @relation("UserCampaignSellers")
 
 model RefreshToken {
   id         String   @id @default(cuid())
@@ -72,8 +73,8 @@ model Donation {
   amountCents Int
   createdAt   DateTime      @default(now())
 
-  paymentId   String?       @unique
-  payment     Payment?      @relation(fields: [paymentId], references: [id])
+paymentId   String?  @unique
+payment     Payment? @relation("DonationPayment", fields: [paymentId], references: [id])
 
   user        User          @relation(fields: [userId], references: [id])
   diocese     Diocese       @relation(fields: [dioceseId], references: [id])
@@ -99,9 +100,8 @@ model Order {
   totalCents  Int
   createdAt   DateTime      @default(now())
 
-  paymentId   String?       @unique
-  payment     Payment?      @relation(fields: [paymentId], references: [id])
-
+paymentId   String?  @unique
+payment     Payment? @relation("OrderPayment", fields: [paymentId], references: [id])
   user        User          @relation(fields: [userId], references: [id])
   items       OrderItem[]
 }
@@ -139,7 +139,7 @@ model CampaignSeller {
   sellerId    String
 
   campaign    Campaign @relation(fields: [campaignId], references: [id])
-  seller      User     @relation(fields: [sellerId], references: [id])
+  seller      User     @relation("UserCampaignSellers", fields: [sellerId], references: [id])
 
   @@unique([campaignId, sellerId])
 }
@@ -155,8 +155,8 @@ model CampaignTicket {
   reservedUntil DateTime
   createdAt    DateTime      @default(now())
 
-  paymentId    String?       @unique
-  payment      Payment?      @relation(fields: [paymentId], references: [id])
+  paymentId    String?  @unique
+payment      Payment? @relation("CampaignTicketPayment", fields: [paymentId], references: [id])
 
   campaign     Campaign      @relation(fields: [campaignId], references: [id])
   seller       User          @relation("SellerSales", fields: [sellerId], references: [id])
@@ -177,4 +177,6 @@ model Payment {
   pixCopyPaste  String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
-}
+donation       Donation?       @relation("DonationPayment")
+order          Order?          @relation("OrderPayment")
+campaignTicket CampaignTicket? @relation("CampaignTicketPayment")}
