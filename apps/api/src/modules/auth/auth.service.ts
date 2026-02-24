@@ -1,1 +1,0 @@
-import {Injectable,UnauthorizedException} from "@nestjs/common";import {JwtService} from "@nestjs/jwt";@Injectable()export class AuthService{constructor(private jwt:JwtService){} async register(n:string,w:string,p:string){return{ok:true}} async login(w:string,p:string){return{access_token:await this.jwt.signAsync({sub:"1"})}}}

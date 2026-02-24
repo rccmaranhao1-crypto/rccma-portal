@@ -1,1 +1,0 @@
-export default function SC(){return <div>Sou Carismático</div>}

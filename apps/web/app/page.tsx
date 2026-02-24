@@ -1,1 +1,0 @@
-export default function Home(){return(<main><h1>Portal RCC MA</h1></main>)}

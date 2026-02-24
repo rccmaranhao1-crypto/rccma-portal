@@ -1,1 +1,0 @@
-import {Body,Controller,Post} from "@nestjs/common";import {AuthService} from "./auth.service";@Controller("auth")export class AuthController{constructor(private a:AuthService){} @Post("register") r(@Body()b:any){return this.a.register(b.name,b.whatsapp,b.password)} @Post("login") l(@Body()b:any){return this.a.login(b.whatsapp,b.password)}}
