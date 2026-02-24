@@ -1,0 +1,5 @@
+
+{ "name":"rccma-api","private":true,"version":"0.1.0",
+  "scripts":{"build":"tsc -p tsconfig.json","start":"node dist/main.js","start:dev":"ts-node-dev --respawn --transpile-only src/main.ts"},
+  "dependencies":{"@nestjs/common":"10.3.0","@nestjs/core":"10.3.0","@nestjs/platform-express":"10.3.0","@nestjs/jwt":"10.2.0","class-validator":"0.14.0","class-transformer":"0.5.1","dotenv":"16.4.1","@prisma/client":"5.9.1","prisma":"5.9.1"},
+  "devDependencies":{"typescript":"5.4.2","ts-node-dev":"2.0.0"}}

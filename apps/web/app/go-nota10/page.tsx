@@ -1,0 +1,1 @@
+export default function Page(){return <div>GO Nota 10</div>}

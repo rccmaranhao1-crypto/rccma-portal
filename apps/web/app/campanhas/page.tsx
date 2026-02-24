@@ -1,0 +1,1 @@
+export default function Campanhas(){return <div>Campanhas</div>}
