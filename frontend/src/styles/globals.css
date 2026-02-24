@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --rcc-green: #006036;
+  --rcc-green2: #009049;
+  --rcc-dark: #004058;
+  --rcc-yellow: #fdc800;
+  --rcc-blue: #b8d0dc;
+  --rcc-white: #ffffff;
+}
+
+body {
+  background: var(--rcc-white);
+  color: var(--rcc-dark);
+}
