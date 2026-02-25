@@ -1,20 +1,16 @@
 FROM node:20-bullseye
 
-WORKDIR /app
+WORKDIR /app/backend
 
-# Copia só package files primeiro (para cache)
-COPY package*.json ./
-
-# Instala dependências (sem rodar prisma ainda)
+# instala deps do backend
+COPY backend/package*.json ./
 RUN npm install
 
-# Agora copia o projeto inteiro (inclui prisma/schema.prisma)
-COPY . .
+# copia o backend (inclui prisma/schema.prisma)
+COPY backend/ ./
 
-# Prisma + Build
 RUN npx prisma generate
 RUN npm run build
 
 EXPOSE 3000
-
-CMD ["npm", "run", "start"]
+CMD ["node", "dist/main.js"]
