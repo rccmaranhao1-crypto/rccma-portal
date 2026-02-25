@@ -27,3 +27,16 @@ import { UploadsModule } from "./modules/uploads/uploads.module";
   ],
 })
 export class AppModule {}
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
+@Module({
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads',
+    }),
+    // ...outros imports
+  ],
+})
+export class AppModule {}
