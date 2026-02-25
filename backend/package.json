@@ -54,3 +54,9 @@
     "typescript": "^5.4.5"
   }
 }
+"scripts": {
+  "dev": "nest start --watch",
+  "build": "nest build",
+  "start": "node dist/main.js",
+  "postinstall": "npx prisma generate && npm run build"
+}
