@@ -31,53 +31,55 @@ model Diocese {
   id        String   @id @default(cuid())
   name      String   @unique
   createdAt DateTime @default(now())
+
   users     User[]
   donations Donation[]
 }
 
 model User {
-  id            String   @id @default(cuid())
-  name          String
-  whatsapp      String   @unique
-  birthDate     DateTime
-  dioceseId     String
-  city          String
-  prayerGroup   String
-  passwordHash  String
-  role          Role     @default(USUARIO_PADRAO)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String   @id @default(cuid())
+  name         String
+  whatsapp     String   @unique
+  birthDate    DateTime
+  dioceseId    String
+  city         String
+  prayerGroup  String
+  passwordHash String
+  role         Role     @default(USUARIO_PADRAO)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  diocese       Diocese  @relation(fields: [dioceseId], references: [id])
+  diocese       Diocese        @relation(fields: [dioceseId], references: [id])
   refreshTokens RefreshToken[]
   donations     Donation[]
   orders        Order[]
-  ticketSales   CampaignTicket[] @relation("SellerSales")
+
+  ticketSales     CampaignTicket[] @relation("SellerSales")
+  campaignSellers CampaignSeller[] @relation("UserCampaignSellers")
 }
-campaignSellers CampaignSeller[] @relation("UserCampaignSellers")
 
 model RefreshToken {
-  id         String   @id @default(cuid())
-  tokenHash  String
-  userId     String
-  createdAt  DateTime @default(now())
-  revokedAt  DateTime?
+  id        String   @id @default(cuid())
+  tokenHash String
+  userId    String
+  createdAt DateTime @default(now())
+  revokedAt DateTime?
 
-  user       User     @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Donation {
-  id          String        @id @default(cuid())
+  id          String   @id @default(cuid())
   userId      String
   dioceseId   String
   amountCents Int
-  createdAt   DateTime      @default(now())
+  createdAt   DateTime @default(now())
 
-paymentId   String?  @unique
-payment     Payment? @relation("DonationPayment", fields: [paymentId], references: [id])
+  paymentId String?  @unique
+  payment   Payment? @relation("DonationPayment", fields: [paymentId], references: [id])
 
-  user        User          @relation(fields: [userId], references: [id])
-  diocese     Diocese       @relation(fields: [dioceseId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  diocese Diocese @relation(fields: [dioceseId], references: [id])
 }
 
 model Product {
@@ -90,31 +92,33 @@ model Product {
   sizes       String[] // ex: ["P","M","G","GG"] when applicable
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  orderItems  OrderItem[]
+
+  orderItems OrderItem[]
 }
 
 model Order {
-  id          String        @id @default(cuid())
-  userId      String
-  status      PaymentStatus @default(PENDING)
-  totalCents  Int
-  createdAt   DateTime      @default(now())
+  id         String        @id @default(cuid())
+  userId     String
+  status     PaymentStatus @default(PENDING)
+  totalCents Int
+  createdAt  DateTime      @default(now())
 
-paymentId   String?  @unique
-payment     Payment? @relation("OrderPayment", fields: [paymentId], references: [id])
-  user        User          @relation(fields: [userId], references: [id])
-  items       OrderItem[]
+  paymentId String?  @unique
+  payment   Payment? @relation("OrderPayment", fields: [paymentId], references: [id])
+
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
 }
 
 model OrderItem {
-  id         String  @id @default(cuid())
+  id         String @id @default(cuid())
   orderId    String
   productId  String
   qty        Int
   priceCents Int
 
-  order      Order   @relation(fields: [orderId], references: [id])
-  product    Product @relation(fields: [productId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 }
 
 model Campaign {
@@ -129,37 +133,37 @@ model Campaign {
   reserveMinutes Int      // 10 or 30
   createdAt      DateTime @default(now())
 
-  sellers        CampaignSeller[]
-  tickets        CampaignTicket[]
+  sellers CampaignSeller[]
+  tickets CampaignTicket[]
 }
 
 model CampaignSeller {
-  id          String   @id @default(cuid())
-  campaignId  String
-  sellerId    String
+  id         String @id @default(cuid())
+  campaignId String
+  sellerId   String
 
-  campaign    Campaign @relation(fields: [campaignId], references: [id])
-  seller      User     @relation("UserCampaignSellers", fields: [sellerId], references: [id])
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+  seller   User     @relation("UserCampaignSellers", fields: [sellerId], references: [id])
 
   @@unique([campaignId, sellerId])
 }
 
 model CampaignTicket {
-  id           String        @id @default(cuid())
-  campaignId   String
-  number       Int
-  buyerName    String
+  id            String        @id @default(cuid())
+  campaignId    String
+  number        Int
+  buyerName     String
   buyerWhatsapp String
-  sellerId     String
-  status       PaymentStatus @default(PENDING)
+  sellerId      String
+  status        PaymentStatus @default(PENDING)
   reservedUntil DateTime
-  createdAt    DateTime      @default(now())
+  createdAt     DateTime      @default(now())
 
-  paymentId    String?  @unique
-payment      Payment? @relation("CampaignTicketPayment", fields: [paymentId], references: [id])
+  paymentId String?  @unique
+  payment   Payment? @relation("CampaignTicketPayment", fields: [paymentId], references: [id])
 
-  campaign     Campaign      @relation(fields: [campaignId], references: [id])
-  seller       User          @relation("SellerSales", fields: [sellerId], references: [id])
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+  seller   User     @relation("SellerSales", fields: [sellerId], references: [id])
 
   @@unique([campaignId, number])
 }
@@ -177,6 +181,8 @@ model Payment {
   pixCopyPaste  String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
-donation       Donation?       @relation("DonationPayment")
-order          Order?          @relation("OrderPayment")
-campaignTicket CampaignTicket? @relation("CampaignTicketPayment")}
+
+  donation       Donation?       @relation("DonationPayment")
+  order          Order?          @relation("OrderPayment")
+  campaignTicket CampaignTicket? @relation("CampaignTicketPayment")
+}
