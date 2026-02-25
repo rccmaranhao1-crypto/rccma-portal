@@ -53,3 +53,11 @@
     "typescript": "^5.4.5"
   }
 }
+"scripts": {
+  "postinstall": "prisma generate",
+  "dev": "nest start --watch",
+  "build": "nest build",
+  "start": "node dist/main.js",
+  "lint": "eslint \"{src,prisma}/**/*.ts\"",
+  "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
+}
