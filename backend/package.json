@@ -18,6 +18,7 @@
     "@nestjs/platform-express": "^10.4.0",
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/serve-static": "^4.0.0",
+    "@prisma/client": "^5.22.0",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
@@ -47,17 +48,9 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "prettier": "^3.2.5",
-    "prisma": "^5.12.1",
+    "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5"
   }
-}
-"scripts": {
-  "postinstall": "prisma generate",
-  "dev": "nest start --watch",
-  "build": "nest build",
-  "start": "node dist/main.js",
-  "lint": "eslint \"{src,prisma}/**/*.ts\"",
-  "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
 }
