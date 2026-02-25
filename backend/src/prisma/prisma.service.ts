@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit, INestApplication } from "@nestjs/common";
+import { INestApplication, Injectable, OnModuleInit } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 
 @Injectable()
@@ -8,8 +8,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   }
 
   async enableShutdownHooks(app: INestApplication) {
-    // workaround de tipagem do Prisma em alguns builds
-    (this as any).$on("beforeExit", async () => {
+    // Prisma v5 em alguns ambientes tipa `beforeExit` de forma restritiva
+    this.$on("beforeExit" as any, async () => {
       await app.close();
     });
   }
