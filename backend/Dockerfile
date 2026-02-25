@@ -1,16 +1,16 @@
 FROM node:20-bookworm-slim
 
-WORKDIR /app/backend
+WORKDIR /app
 
-# Copia só o package primeiro (cache bom)
-COPY backend/package*.json ./
+# copia package do backend (já que o build context é a pasta backend)
+COPY package*.json ./
 
 RUN npm ci
 
-# Copia o código do backend
-COPY backend/ ./
+# copia todo o código do backend
+COPY . .
 
-# Prisma + build
+# prisma + build
 RUN npx prisma generate
 RUN npm run build
 
