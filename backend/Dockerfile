@@ -6,9 +6,11 @@ RUN apt-get update -y \
 
 WORKDIR /app
 
+# Copia os manifests do backend (porque eles NÃO estão na raiz do repo)
 COPY backend/package*.json ./
 RUN npm install
 
+# Copia o código do backend
 COPY backend/ ./
 
 RUN npx prisma generate
