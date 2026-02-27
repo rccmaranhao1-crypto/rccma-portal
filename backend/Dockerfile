@@ -1,20 +1,16 @@
 FROM node:20-bookworm-slim
 
-# OpenSSL (Prisma)
 RUN apt-get update -y \
   && apt-get install -y openssl \
   && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app/backend
+WORKDIR /app
 
-# instala deps do backend
-COPY backend/package*.json ./
+COPY package*.json ./
 RUN npm install
 
-# copia o código do backend
-COPY backend/ ./
+COPY . .
 
-# prisma + build
 RUN npx prisma generate
 RUN npm run build
 
