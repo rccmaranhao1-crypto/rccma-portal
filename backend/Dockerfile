@@ -16,4 +16,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "ls -R dist && echo '---' && find dist -name 'main.js' -o -name 'main.*' && echo '---' && node -e \"console.log('PWD', process.cwd())\""]
+CMD ["node", "dist/src/main.js"]
