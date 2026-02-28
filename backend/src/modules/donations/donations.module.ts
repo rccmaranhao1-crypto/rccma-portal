@@ -1,10 +1,7 @@
-import { Module } from '@nestjs/common';
-import { DonationsService } from './donations.service';
-import { DonationsController } from './donations.controller';
-import { PaymentsModule } from '../payments/payments.module'; // ajuste o path se necessário
+import { PaymentsModule } from '../payments/payments.module';
 
 @Module({
-  imports: [PaymentsModule], // <<< IMPORTANTE
+  imports: [PaymentsModule],
   controllers: [DonationsController],
   providers: [DonationsService],
 })
