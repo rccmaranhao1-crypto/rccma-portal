@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16
+    container_name: rcc_ma_postgres
+    environment:
+      POSTGRES_USER: rcc
+      POSTGRES_PASSWORD: rcc_password
+      POSTGRES_DB: rcc_ma
+    ports:
+      - "5432:5432"
+    volumes:
+      - rcc_ma_pgdata:/var/lib/postgresql/data
+
+volumes:
+  rcc_ma_pgdata:
