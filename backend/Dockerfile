@@ -4,17 +4,12 @@ RUN apt-get update -y \
   && apt-get install -y openssl \
   && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app/backend
+WORKDIR /app
 
-COPY backend/package*.json ./
+COPY package*.json ./
 RUN npm install
 
-COPY backend/ ./
-
-RUN npx prisma generate
-RUN npm run build
-
-EXPOSE 3000
+COPY . .
 
 RUN npx prisma generate
 RUN npm run build
