@@ -1,19 +1,19 @@
 FROM node:20-bookworm-slim
 
-WORKDIR /app
+RUN apt-get update -y \
+  && apt-get install -y openssl \
+  && rm -rf /var/lib/apt/lists/*
 
-COPY package*.json ./
+WORKDIR /app/backend
 
+COPY backend/package*.json ./
 RUN npm install
 
-COPY . .
+COPY backend/ ./
 
 RUN npx prisma generate
-
-RUN npx prisma migrate deploy
-
 RUN npm run build
 
 EXPOSE 3000
 
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/src/main.js"]
