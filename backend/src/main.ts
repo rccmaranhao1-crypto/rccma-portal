@@ -6,6 +6,14 @@ import { join } from "path";
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  app.enableCors({
+    origin: [
+      "https://rccma-portal-2.onrender.com",
+      "http://localhost:3000",
+    ],
+    credentials: true,
+  });
+
   app.useStaticAssets(join(process.cwd(), "uploads"), { prefix: "/uploads" });
 
   const port = process.env.PORT || 3000;
