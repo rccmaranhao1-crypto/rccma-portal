@@ -4,7 +4,6 @@ import * as bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Dioceses list (as required)
   const dioceses = [
     "Bacabal",
     "Balsas",
@@ -29,16 +28,27 @@ async function main() {
     });
   }
 
-  const diocese = await prisma.diocese.findFirst({ where: { name: "São Luís do Maranhão" } });
-  if (!diocese) throw new Error("Diocese seed failed.");
+  const diocese = await prisma.diocese.findFirst({
+    where: { name: "São Luís do Maranhão" },
+  });
+
+  if (!diocese) {
+    throw new Error("Diocese seed failed.");
+  }
 
   const whatsapp = "(99)9824-7746";
   const password = "ucra01";
-  const hash = await bcrypt.hash(password, 12);
+  const passwordHash = await bcrypt.hash(password, 12);
 
   await prisma.user.upsert({
     where: { whatsapp },
     update: {
+      name: "ADM RCC MA",
+      birthDate: new Date("1990-01-01"),
+      dioceseId: diocese.id,
+      city: "São Luís",
+      prayerGroup: "Administração",
+      passwordHash,
       role: Role.ADM,
     },
     create: {
@@ -48,7 +58,7 @@ async function main() {
       dioceseId: diocese.id,
       city: "São Luís",
       prayerGroup: "Administração",
-      passwordHash: hash,
+      passwordHash,
       role: Role.ADM,
     },
   });
@@ -58,7 +68,7 @@ async function main() {
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error("❌ Erro no seed:", e);
     process.exit(1);
   })
   .finally(async () => {
